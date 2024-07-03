@@ -1,0 +1,21 @@
+# -*- mode: sh; sh-shell: bash -*-
+
+CLEANUP() {
+	unset __ret_val
+	unset vars not to be exported
+}
+
+trap CLEANUP exit return
+
+__ret_val=0
+
+# put script here
+export DENO_INSTALL="/home/zitz/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
+
+
+# this odd construct allows us to return an exit value whether we
+# execute this script (needing an 'exit' ) or sourced it (needing a
+# 'return').
+# shellcheck disable=SC2317
+return "$__ret_val" 2>/dev/null || exit "$__ret_val"
